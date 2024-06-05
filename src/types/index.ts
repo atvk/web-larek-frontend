@@ -23,7 +23,7 @@ export interface IProductInBasket extends IProduct {
 
 export interface IPaymentForm {
 	payment: string;
-	address: string;
+	address?: string;
 }
 
 export interface IContactsForm {
