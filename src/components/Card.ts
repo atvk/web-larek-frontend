@@ -6,6 +6,14 @@ interface ICardActions {
 	onClick: (event: MouseEvent) => void;
 }
 
+const CardsCategory = {
+	['софт-скил']: 'soft',
+	['другое']: 'other',
+	['кнопка']: 'button',
+	['хард-скил']: 'hard',
+	['дополнительное']: 'additional',
+};
+
 export class Card extends Component<IProduct> {
 	protected _title: HTMLElement;
 	protected _image: HTMLImageElement;
@@ -26,10 +34,8 @@ export class Card extends Component<IProduct> {
 			`.${blockName}__image`,
 			container
 		);
-		this._category = ensureElement<HTMLElement>(
-			`.${blockName}__category`,
-			container
-		);
+
+		this._category = container.querySelector(`.${blockName}__category`);
 		this._price = container.querySelector(`.${blockName}__price`);
 		this._description = container.querySelector(`.${blockName}__description`);
 		this._button = container.querySelector(`.${blockName}__button`);
@@ -59,8 +65,12 @@ export class Card extends Component<IProduct> {
 		return this._title.textContent || '';
 	}
 
-	set catetory(value: string) {
-		this.setText(this._category, value);
+	set category(value: keyof typeof CardsCategory) {
+		if (this._category) {
+			this.setText(this._category, value);
+			const categoryStyle = `card__category_${CardsCategory[value]}`;
+			this.toggleClass(this._category, categoryStyle, true);
+		}
 	}
 
 	set price(value: number | null) {
