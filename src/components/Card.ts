@@ -6,14 +6,6 @@ interface ICardActions {
 	onClick: (event: MouseEvent) => void;
 }
 
-const CardsCategory = {
-	['софт-скил']: 'soft',
-	['другое']: 'other',
-	['кнопка']: 'button',
-	['хард-скил']: 'hard',
-	['дополнительное']: 'additional',
-};
-
 export class Card extends Component<IProduct> {
 	protected _title: HTMLElement;
 	protected _image: HTMLImageElement;
@@ -21,6 +13,13 @@ export class Card extends Component<IProduct> {
 	protected _price: HTMLElement;
 	protected _description: HTMLElement;
 	protected _button?: HTMLButtonElement;
+	protected _colors = <Record<string, string>>{
+		'дополнительное': 'additional',
+		'софт-скил': 'soft',
+		'кнопка': 'button',
+		'хард-скил': 'hard',
+		'другое': 'other',
+	};
 
 	constructor(
 		protected blockName: string,
@@ -34,7 +33,6 @@ export class Card extends Component<IProduct> {
 			`.${blockName}__image`,
 			container
 		);
-
 		this._category = container.querySelector(`.${blockName}__category`);
 		this._price = container.querySelector(`.${blockName}__price`);
 		this._description = container.querySelector(`.${blockName}__description`);
@@ -65,12 +63,9 @@ export class Card extends Component<IProduct> {
 		return this._title.textContent || '';
 	}
 
-	set category(value: keyof typeof CardsCategory) {
-		if (this._category) {
-			this.setText(this._category, value);
-			const categoryStyle = `card__category_${CardsCategory[value]}`;
-			this.toggleClass(this._category, categoryStyle, true);
-		}
+	set category(value: string) {
+		this.setText(this._category, value);
+		this._category.className = `card__category card__category_${this._colors[value]}`;
 	}
 
 	set price(value: number | null) {
