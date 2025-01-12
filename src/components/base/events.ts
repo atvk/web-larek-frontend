@@ -1,6 +1,7 @@
 // Хорошая практика даже простые типы выносить в алиасы
 // Зато когда захотите поменять это достаточно сделать в одном месте
 type EventName = string | RegExp;
+// eslint-disable-next-line @typescript-eslint/ban-types
 type Subscriber = Function;
 type EmitterEvent = {
     eventName: string,
@@ -40,7 +41,7 @@ export class EventEmitter implements IEvents {
      */
     off(eventName: EventName, callback: Subscriber) {
         if (this._events.has(eventName)) {
-            this._events.get(eventName)!.delete(callback);
+            this._events.get(eventName)?.delete(callback);
             if (this._events.get(eventName)?.size === 0) {
                 this._events.delete(eventName);
             }
